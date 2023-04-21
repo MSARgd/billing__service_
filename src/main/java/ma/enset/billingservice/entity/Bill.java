@@ -11,12 +11,16 @@ import java.util.Date;
 public class Bill {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    private Date dateBilling;
-    @OneToMany(mappedBy = "bill")
-    private Collection<ProductItem> productItems;
+    private Date billingData;
     private long customerId;
     @Transient
     private Customer customer;
+    @OneToMany(mappedBy ="bill")
+    private Collection<ProductItem> productItems;
+
+
+
+
 
 
 }

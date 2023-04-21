@@ -1,11 +1,19 @@
 package ma.enset.billingservice.entity;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.*;
-@Data @NoArgsConstructor @AllArgsConstructor @ToString @Builder
+
+@Entity
+@Data @NoArgsConstructor @AllArgsConstructor @Builder @ToString
 public class Customer {
-    private long id;
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private  long id;
     private String name;
-    private  String email;
+    private String email;
+
 
 
 }

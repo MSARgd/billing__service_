@@ -4,9 +4,10 @@ import ma.enset.billingservice.entity.Customer;
 import ma.enset.billingservice.entity.Product;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.hateoas.PagedModel;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-
+@Component
 @FeignClient(name = "customer-service")
 public interface CustomerServiveClient {
     @GetMapping("/customers/{id}?projection=fullCustomer")

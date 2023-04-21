@@ -10,7 +10,10 @@ public class ProductItem {
     private long id;
     private long productId;
     private double price;
-    private int quantity;
+    private long quantity;
     @ManyToOne
     private Bill bill;
+    @Transient
+    private Product product;
+
 }
