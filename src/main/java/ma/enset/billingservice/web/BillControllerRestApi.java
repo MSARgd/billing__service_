@@ -37,7 +37,9 @@ public class BillControllerRestApi {
         bill.getProductItems().forEach(p -> {
             p.setProduct(inventoryServiceClient.findProductById(p.getProductId()));
         });
+
         return Optional.ofNullable(Optional.of(bill)
                 .orElseThrow(() -> new IllegalArgumentException("Invalide id" + id)));
     }
+
 }

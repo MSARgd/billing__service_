@@ -13,10 +13,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.hateoas.PagedModel;
-
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 @SpringBootApplication
 @EnableFeignClients
@@ -34,23 +32,29 @@ public class BillingServiceApplication implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		Customer customer = customerServiveClient.findCustomerById(1L);
 		System.out.println(customer.toString());
-		Product productById = inventoryServiceClient.findProductById(2L);
-		System.out.print(productById.toString());
-		List<ProductItem> allProductItems = productItemRepository.findAll();
-		Bill bill = billRepository.save(new Bill(null, new Date(), customer.getId(), null, null));
-		PagedModel<Product> products = inventoryServiceClient.findAll();
-		for (Product product : products) {
-			ProductItem productItem = new ProductItem();
-			productItem.setProductId(product.getId());
-			productItem.setPrice(product.getPrice());
-			productItem.setQuantity((long) (Math.random()*10));
-			productItem.setBill(bill);
-			productItemRepository.save(productItem);
 
-		}
+		Bill bill = Bill.builder()
+				.id(1L)
+				.billingData(new Date((long) (Math.random()*System.currentTimeMillis())))
+				.customerId(customer.getId())
+				.customer(null)
+				.productItems(null)
+				.build();
+		billRepository.save(bill);
+		System.out.println(bill.toString());
 
-
-
+		List<Product> productsModel  = inventoryServiceClient.getProducts();
+		productsModel.forEach(p->{
+			ProductItem productItem = ProductItem.builder()
+					.productId(p.getId())
+					.bill(bill)
+					.product(p)
+					.quantity((long) (Math.random()*10))
+					.price(p.getPrice())
+					.build();
+			System.out.println(productItem.toString());
+			 productItemRepository.save(productItem);
+		});
 
 	}
 }
